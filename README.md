@@ -96,6 +96,10 @@ uvicorn app:app --reload
 EVIDENCE_USE_FAKE_EMBEDDINGS=1 python3 -m pytest
 ```
 
+## Troubleshooting
+- `externally-managed-environment` error on `pip install`: create a virtualenv first (`python3 -m venv .venv && source .venv/bin/activate`) so Homebrew's managed Python stays untouched.
+- `faiss-cpu` fails to install under Python 3.13: use Python 3.10 or 3.11 for the virtualenv (Faiss wheels for macOS currently target ≤3.11).
+
 ## MVP Checklist
 - [x] TXT ingest/ask flow operational
 - [x] Evidence includes doc_id + page/heading + score
