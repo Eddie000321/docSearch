@@ -114,6 +114,12 @@ EVIDENCE_USE_FAKE_EMBEDDINGS=1 python3 -m pytest
 - Observability & security: add structured logging/metrics, secure the API with API Gateway + auth, and tighten CORS per environment before exposing publicly.
 - CI/CD: automate Docker builds/tests with GitHub Actions and deploy on merge; include health checks and smoke tests post-deploy.
 
+## Future: Azure Integration Ideas
+- Deploy the container to Azure Container Apps or App Service, with the image stored in Azure Container Registry and `/app/data` backed by Azure Files for persistent indices.
+- Replace local FAISS with Azure AI Search by adding a `VectorStore` adapter that writes chunk metadata and embeddings to a vector-enabled index.
+- Store uploaded documents in Azure Blob Storage and trigger ingestion via SAS URLs or Azure Storage Queue workers for bulk processing.
+- Centralize observability using Azure Monitor and Application Insights, and front the API with Azure API Management for throttling, auth, and custom domains.
+
 ## MVP Checklist
 - [x] TXT ingest/ask flow operational
 - [x] Evidence includes doc_id + page/heading + score
