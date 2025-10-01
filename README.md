@@ -91,6 +91,14 @@ python3 -m pip install -r requirements.txt
 uvicorn app:app --reload
 ```
 
+## Docker
+```bash
+docker build -t evidence-docsearch .
+docker run --rm -p 8000:8000 -v $(pwd)/data:/app/data evidence-docsearch
+```
+- Mounting `$(pwd)/data` keeps the FAISS index outside the container for persistence.
+- Add `-e EVIDENCE_USE_FAKE_EMBEDDINGS=1` for deterministic stub embeddings inside the container.
+
 ## Testing
 ```bash
 EVIDENCE_USE_FAKE_EMBEDDINGS=1 python3 -m pytest
@@ -99,6 +107,12 @@ EVIDENCE_USE_FAKE_EMBEDDINGS=1 python3 -m pytest
 ## Troubleshooting
 - `externally-managed-environment` error on `pip install`: create a virtualenv first (`python3 -m venv .venv && source .venv/bin/activate`) so Homebrew's managed Python stays untouched.
 - `faiss-cpu` fails to install under Python 3.13: use Python 3.10 or 3.11 for the virtualenv (Faiss wheels for macOS currently target ≤3.11).
+
+## Cloud Deployment Roadmap
+- Container hosting: push the Docker image to a registry (ECR/GCR/ACR) and run it on ECS Fargate, Cloud Run, or Azure Container Apps; mount `/app/data` to managed storage (S3+EFS, GCS Filestore, Azure Files) for the FAISS index.
+- Managed vector stores: extend `VectorStore` with adapters for Pinecone, Weaviate Cloud, or Azure AI Search when you need replication or hosted similarity search.
+- Observability & security: add structured logging/metrics, secure the API with API Gateway + auth, and tighten CORS per environment before exposing publicly.
+- CI/CD: automate Docker builds/tests with GitHub Actions and deploy on merge; include health checks and smoke tests post-deploy.
 
 ## MVP Checklist
 - [x] TXT ingest/ask flow operational
