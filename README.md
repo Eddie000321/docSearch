@@ -2,7 +2,10 @@
 
 **For Reviewers**
 1. Run API: `uvicorn app:app --host 0.0.0.0 --port 8000`
-2. Ingest TXT: `curl -F "file=@tests/data/sample.txt" http://localhost:8000/api/v1/ingest`
+2. Ingest a sample document (see "Sample Documents" below):
+   - TXT: `curl -F "file=@tests/data/sample.txt" http://localhost:8000/api/v1/ingest`
+   - DOCX: `curl -F "file=@tests/data/file-sample_1MB.docx" http://localhost:8000/api/v1/ingest`
+   - PDF: `curl -F "file=@tests/data/resumeSample.pdf" http://localhost:8000/api/v1/ingest`
 3. Ask: `curl -X POST -H "Content-Type: application/json" -d '{"question":"What does the system do?","k":3}' http://localhost:8000/api/v1/ask`
 
 ![Ask endpoint screenshot](docs/ask-evidence.png)
@@ -16,6 +19,13 @@ Organize documents (ingest → chunk → embed) and deliver fast semantic search
 - all-MiniLM-L6-v2 sentence embeddings (cosine normalized) backed by FAISS; metadata stored in `data/meta.jsonl`.
 - Evidence payload includes `doc_id`, `file_type`, `page_or_heading`, `offset`, `chunk_id`, and the matched text snippet.
 - Safeguards: extension whitelist, file size (10 MB) and PDF page limit (50), sanitized error messages, and text-free logging.
+
+## Sample Documents
+- `tests/data/sample.txt` – Minimal walkthrough of the Evidence DocSearch flow (used by automated tests).
+- `tests/data/file-sample_1MB.docx` – Longer DOCX file for validating heading-aware extraction and chunking.
+- `tests/data/resumeSample.pdf` – Realistic multi-page PDF. Swap with your own resume or PDF to see page metadata in the evidence payload.
+
+Use any of the files above with the `/api/v1/ingest` endpoint. After each ingest, call `/api/v1/ask` with a question that matches the document (for example, "What experience does Eddie have with RAG systems?" for the resume sample) to confirm evidence snippets reference the uploaded document and include the correct `page_or_heading`.
 
 ## Project Layout
 ```
