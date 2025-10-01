@@ -1,0 +1,5 @@
+Evidence DocSearch powers quick lookup.
+
+This system ingests documents, splits them into overlapping chunks, and stores embeddings in FAISS.
+
+Users can ask questions and receive relevant snippets with citations.
