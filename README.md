@@ -103,6 +103,3 @@ EVIDENCE_USE_FAKE_EMBEDDINGS=1 python3 -m pytest
 - [ ] Optional: Dockerfile or MLflow logging (future)
 
 ## Changelog
-- 2025-02-15: Initial FastAPI service with ingestion/search pipeline
-- 2025-02-15: Added PDF & DOCX extractors plus citation-rich metadata
-- 2025-02-15: Added pytest suite, reviewer docs, and evidence screenshot
